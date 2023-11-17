@@ -12,7 +12,7 @@
 # and clean up the web/ source code
 #########################################################################
 
-FROM alpine:latest AS app-builder
+FROM alpine:3.19.0@sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48 AS app-builder
 
 RUN apk add --no-cache \
     autoconf \
@@ -64,7 +64,7 @@ RUN export CPPFLAGS="-DPNG_ARM_NEON_OPT=0" && \
 # Next, create the base environment for Python
 #########################################################################
 
-FROM alpine:latest AS env-builder
+FROM alpine:3.19.0@sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48 AS env-builder
 
 # Install dependencies
 COPY requirements.txt /
@@ -122,7 +122,7 @@ FROM postgres:14-alpine AS pg14-builder
 FROM postgres:15-alpine AS pg15-builder
 FROM postgres:16-alpine AS pg16-builder
 
-FROM alpine:latest AS tool-builder
+FROM alpine:3.19.0@sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48 AS tool-builder
 
 # Copy the PG binaries
 COPY --from=pg12-builder /usr/local/bin/pg_dump /usr/local/pgsql/pgsql-12/
@@ -154,7 +154,7 @@ COPY --from=pg16-builder /usr/local/bin/psql /usr/local/pgsql/pgsql-16/
 # Assemble everything into the final container.
 #########################################################################
 
-FROM alpine:latest
+FROM alpine:3.19.0@sha256:51b67269f354137895d43f3b3d810bfacd3945438e94dc5ac55fdac340352f48
 
 # Copy in the Python packages
 COPY --from=env-builder /venv /venv
